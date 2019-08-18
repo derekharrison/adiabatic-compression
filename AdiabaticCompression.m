@@ -128,7 +128,7 @@ while time <= max_t
         avg_kin_energy  = 0.5 * mass * v2 + avg_kin_energy;  
     end
     total_kin_energy = avg_kin_energy;
-    avg_kin_energy = avg_kin_energy / N
+    avg_kin_energy = avg_kin_energy / N;
 
     if time < start_comp_t
         avg_kin_energy_before_compression = avg_kin_energy;
@@ -236,10 +236,7 @@ while time <= max_t
         end 
     end
     
-    %Update position and velocity
-    SIZE_CHECK_WALL = l_wall_east
-    TIME_CHECK = time
-    
+    %Update position and velocity    
     if dt <= coll_time
         x = v_x * dt * (1 - err) + x;
         y = v_y * dt * (1 - err) + y;
@@ -265,32 +262,6 @@ while time <= max_t
         l_wall_south = v_wall_south * coll_time + l_wall_south;
         l_wall_top = v_wall_top * coll_time + l_wall_top;        
         l_wall_bottom = v_wall_bottom * coll_time + l_wall_bottom;
-        
-        %Check overlap
-        there_is_overlap = false;
-        for n = 1:N
-            for i = (n+1):N 
-                dx = x(i) - x(n);
-                dy = y(i) - y(n);
-                dz = z(i) - z(n);
-                if dx*dx + dy*dy + dz*dz < (2*R)*(2*R)
-                     there_is_overlap = true;
-                end    
-            end
-        end
-        there_is_overlap
-
-        %Check if in boundaries
-        in_boundaries = false;
-        for n = 1:N
-            in_boundaries = (x(n) <= l_wall_east) && (x(n) >= l_wall_west && ... 
-                             y(n) <= l_wall_north) && (y(n) >= l_wall_south && ...
-                             z(n) <= l_wall_top) && (z(n) >= l_wall_bottom);
-            if in_boundaries
-                in_boundaries = true;
-            end
-        end
-        in_boundaries
 
         %Update velocities of colliding particles
         if collision_with_particle == true
@@ -377,9 +348,6 @@ while time <= max_t
         writeVideo(writerObj,frame);
     end
 end
-
-avg_kin_energy_before_compression
-avg_kin_energy_after_compression
         
 temperature_ratio_theory = (((2*L)^3) / ((2*l_wall_east)^3))^(2/3)
 temperature_ratio_simulation = avg_kin_energy_after_compression / avg_kin_energy_before_compression
