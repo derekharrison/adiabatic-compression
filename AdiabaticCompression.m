@@ -1,25 +1,25 @@
 %Adiabatic compression of an ideal monatomic gas
 
-R = 0.03;
-L = 1.0;
-N = 10;
+R = 0.02;                           %Particle radii
+L = 1.0;                            %One half the length of one of the cube sides
+N = 20;                             %Number of particles in the system
 
-max_vel = 2.0;
-mass = 1.0;
-max_t = 10;
-start_comp_t = 4;
-end_comp_t = 5;
-v_wall = 0.1;
-dt = 5e-2;
+max_vel = 2.0;                      %Max value particle velocity
+mass = 1.0;                         %Mass of a particle
+max_t = 10;                         %Max simulation time
+start_comp_t = 5;                   %Start time compression
+end_comp_t = 7;                     %End time compression
+v_wall = 0.05;                      %Velocity of cube side during compression
+dt = 5e-2;                          %Timestep size
 
-e  = 1.0;                           %normal restitution coefficient dogzs
+e  = 1.0;                           %Normal restitution coefficient
 mu = 0.00;                          %Friction coefficient
-Bo = 1.0;      
+Bo = 1.0;                           %Coefficient of tangiential restitution
 
-err = 1e-10;
-h = L - R - err;
+err = 1e-10;                        %Small number
+h = L - R - err;                    %Domain limit particle injection
 
-writevideo = true;
+writevideo = true;                  %Generate video of simulation
 
 tic 
 
@@ -349,6 +349,7 @@ while time <= max_t
     end
 end
         
+l_wall_east
 temperature_ratio_theory = (((2*L)^3) / ((2*l_wall_east)^3))^(2/3)
 temperature_ratio_simulation = avg_kin_energy_after_compression / avg_kin_energy_before_compression
 
