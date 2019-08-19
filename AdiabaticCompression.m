@@ -1,20 +1,20 @@
 %Adiabatic compression of an ideal monatomic gas
 
 R = 0.02;                           %Particle radii
-L = 1.0;                            %One half the length of one of the cube sides
-N = 20;                             %Number of particles in the system
+L = 4.0;                            %One half the length of one of the cube sides
+N = 40;                             %Number of particles in the system
 
-max_vel = 2.0;                      %Max value particle velocity
+max_vel = 6.0;                      %Max value particle velocity
 mass = 1.0;                         %Mass of a particle
-max_t = 10;                         %Max simulation time
+max_t = 15;                         %Max simulation time
 start_comp_t = 5;                   %Start time compression
-end_comp_t = 7;                     %End time compression
-v_wall = 0.05;                      %Velocity of cube side during compression
+end_comp_t = 12;                    %End time compression
+v_wall = 0.2;                       %Velocity of cube side during compression
 dt = 5e-2;                          %Timestep size
 
 e  = 1.0;                           %Normal restitution coefficient
 mu = 0.00;                          %Friction coefficient
-Bo = 1.0;                           %Coefficient of tangiential restitution
+Bo = 1.0;                           %Coefficient of tangential restitution
 
 err = 1e-10;                        %Small number
 h = L - R - err;                    %Domain limit particle injection
@@ -334,19 +334,64 @@ while time <= max_t
             end   
         end
     end
+    
+    close all
+    hold on
+    
+    patch([l_wall_west,   l_wall_east,   l_wall_east,   l_wall_west], ...
+          [l_wall_south,  l_wall_south,  l_wall_north,  l_wall_north], ...
+          [l_wall_bottom, l_wall_bottom, l_wall_bottom, l_wall_bottom], ...
+          'blue', ...
+          'FaceAlpha', 0.1)
 
-    scatter3(x,y,z, 2 * R * 4000)
+    patch([l_wall_west,   l_wall_east,   l_wall_east,  l_wall_west], ...
+          [l_wall_south,  l_wall_south,  l_wall_south, l_wall_south], ...
+          [l_wall_bottom, l_wall_bottom, l_wall_top,   l_wall_top], ...
+          'red', ...
+          'FaceAlpha', 0.1)
+
+    patch([l_wall_east,   l_wall_east,  l_wall_east,  l_wall_east], ...
+          [l_wall_south,  l_wall_south, l_wall_north, l_wall_north], ...
+          [l_wall_bottom, l_wall_top,   l_wall_top,   l_wall_bottom], ...
+          'blue', ...
+          'FaceAlpha', 0.1)  
+
+    patch([l_wall_east,   l_wall_east,  l_wall_west,  l_wall_west], ...
+          [l_wall_north,  l_wall_north, l_wall_north, l_wall_north], ...
+          [l_wall_bottom, l_wall_top,   l_wall_top,   l_wall_bottom], ...
+          'red', ...
+          'FaceAlpha', 0.1) 
+
+    patch([l_wall_west,   l_wall_west,  l_wall_west,  l_wall_west], ...
+          [l_wall_south,  l_wall_south, l_wall_north, l_wall_north], ...
+          [l_wall_bottom, l_wall_top,   l_wall_top,   l_wall_bottom], ...
+          'blue', ...
+          'FaceAlpha', 0.1) 
+
+    patch([l_wall_west,  l_wall_west,  l_wall_east,  l_wall_east], ...
+          [l_wall_south, l_wall_north, l_wall_north, l_wall_south], ...
+          [l_wall_top,   l_wall_top,   l_wall_top,   l_wall_top], ...
+          'red', ...
+          'FaceAlpha', 0.1)
+    
+    rotate3d
+    grid on
+    view(3)
+
+    scatter3(x,y,z, 2 * R * 4000, 'k', 'filled')
     xlim([-L L])
     ylim([-L L])
     zlim([-L L])
-
+    hold off
+    
     set(gca,'nextplot','replacechildren');
-    set(gcf,'Renderer','zbuffer')
-    %set(gcf,'units','normalized','outerposition',[0.2 0.10 0.56 1.6*0.56])  
+    set(gcf,'Renderer','zbuffer') 
     frame = getframe(gcf); 
     if writevideo == 1      
         writeVideo(writerObj,frame);
     end
+    
+    TIME = time
 end
         
 l_wall_east
