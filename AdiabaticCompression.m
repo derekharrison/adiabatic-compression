@@ -1,7 +1,8 @@
 %Adiabatic compression of an ideal monatomic gas
 
+%Simulation parameters
 R = 0.02;                           %Particle radii
-L = 4.0;                            %One half the length of one of the cube sides
+L = 4.0;                            %One half the length of one of the cube edges
 N = 40;                             %Number of particles in the system
 
 max_vel = 6.0;                      %Max value particle velocity
@@ -9,21 +10,21 @@ mass = 1.0;                         %Mass of a particle
 max_t = 15;                         %Max simulation time
 start_comp_t = 5;                   %Start time compression
 end_comp_t = 12;                    %End time compression
-v_wall = 0.2;                       %Velocity of cube side during compression
+v_wall = 0.2;                       %Compression rate
 dt = 5e-2;                          %Timestep size
 
 e  = 1.0;                           %Normal restitution coefficient
 mu = 0.00;                          %Friction coefficient
 Bo = 1.0;                           %Coefficient of tangential restitution
 
+writevideo = true;                  %Generate video of simulation
+sim_with_cube_boundary = false;     %Generate video of simulation with compression boundary
+
+%Initialization
+tic
 err = 1e-10;                        %Small number
 h = L - R - err;                    %Domain limit particle injection
 
-writevideo = true;                  %Generate video of simulation
-sim_with_cube_boundary = false      %Generate video of simulation with compression boundary
-tic 
-
-%Initialization
 l_wall_east = L;
 l_wall_west = -L;
 l_wall_south = -L;
