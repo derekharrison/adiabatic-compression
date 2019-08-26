@@ -17,7 +17,7 @@ e  = 1.0;                           %Normal restitution coefficient
 mu = 0.00;                          %Friction coefficient
 Bo = 1.0;                           %Coefficient of tangential restitution
 
-writevideo = true;                  %Generate video of simulation
+writevideo = false;                  %Generate video of simulation
 sim_with_cube_boundary = false;     %Generate video of simulation with compression boundary
 
 %Initialization
@@ -339,7 +339,7 @@ while time <= max_t
     end
     
     %Save frames at regular intervals spaced at dt
-    if frame_counter == floor(time/dt)
+    if (frame_counter == floor(time/dt)) && (writevideo == true)
         if sim_with_cube_boundary == true
             close all
             hold on
@@ -395,11 +395,11 @@ while time <= max_t
             ylim([-L L])
             zlim([-L L])
         end
-
-        set(gca,'nextplot','replacechildren');
-        set(gcf,'Renderer','zbuffer') 
-        frame = getframe(gcf); 
-        if writevideo == 1      
+        
+        if writevideo == true 
+            set(gca,'nextplot','replacechildren');
+            set(gcf,'Renderer','zbuffer') 
+            frame = getframe(gcf); 
             writeVideo(writerObj,frame);
         end
         frame_counter = frame_counter + 1;
@@ -411,7 +411,7 @@ l_wall_east
 temperature_ratio_theory = (((2*L)^3) / ((2*l_wall_east)^3))^(2/3)
 temperature_ratio_simulation = avg_kin_energy_after_compression / avg_kin_energy_before_compression
 
-if writevideo == 1
+if writevideo == true
     close(writerObj);
 end
 
