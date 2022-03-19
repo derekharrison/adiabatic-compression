@@ -54,7 +54,7 @@ Wz = np.zeros((N))
 avg_kin_energy_before_compression = 0
 avg_kin_energy_after_compression = 0
 
-frame_counter = 0;
+frame_counter = 0
 
 #Generating initial position of first particle
 x[0] = 2 * h * np.random.rand() - h
@@ -66,7 +66,7 @@ for n in range(1,N):
     x[n] = 2 * h * np.random.rand() - h
     y[n] = 2 * h * np.random.rand() - h
     z[n] = 2 * h * np.random.rand() - h
-    overlap = True;
+    overlap = True
     while overlap == True:
         overlap = False
         for i in range(0, n):
